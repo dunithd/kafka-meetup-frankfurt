@@ -14,7 +14,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
 public class OrderProcessingJob {
-    private static final String KAFKA_URL = "broker:29092";
+    private static final String KAFKA_URL = "redpanda:9092";
 
     public static void main(String[] args) throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -39,6 +39,7 @@ public class OrderProcessingJob {
 
         env.fromSource(kafkaSource, WatermarkStrategy.noWatermarks(), "kafka-source")
                 .map(new RegionTransformer())
+                .filter(new LATAMFilter())
                 .sinkTo(kafkaSink);
 
         env.execute("stateless-job");

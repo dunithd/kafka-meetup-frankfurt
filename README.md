@@ -16,9 +16,8 @@ env.fromSequence(1,10).map(i -> 2 * i).print();
 
 ## Create Kafka topics
 
-docker compose exec broker bash
-kafka-topics --create --topic orders-raw --bootstrap-server broker:9092
+
 
 ## Produce data with `kcat` 
 
-kcat -b localhost:9092 -P -T -t orders-raw -l data/orders.json
+kcat -b localhost:19092 -t orders-raw -T -P -l data/orders.json
